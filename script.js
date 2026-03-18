@@ -859,7 +859,7 @@ const worksData = [
     likes: 18,
     comments: 6,
     description: "完整的品牌视觉识别系统设计..."
-  },
+ },
   {
   id: 6,
   title: "年终汇报PPT模板",
