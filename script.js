@@ -859,37 +859,37 @@ const worksData = [
     likes: 18,
     comments: 6,
     description: "完整的品牌视觉识别系统设计..."
- },
+  },  // ✅ 这里应该是 }, 不是 },
   {
-  id: 6,
-  title: "年终汇报PPT模板",
-  category: "ppt",  // PPT设计分类
-  image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop",
-  size: "1920x1080px",
-  format: "PPTX",
-  date: "2025.11",
-  time: "创作周期：1周",
-  tools: "工具：PowerPoint, Keynote",
-  tags: ["PPT", "模板", "商务"],
-  likes: 15,
-  comments: 5,
-  description: "为年终汇报设计的专业PPT模板..."
-},
-{
-  id: 7,
-  title: "产品宣传文案",
-  category: "copywriting",  // 文案撰写分类
-  image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&auto=format&fit=crop",
-  size: "A4",
-  format: "DOCX",
-  date: "2025.09",
-  time: "创作周期：3天",
-  tools: "工具：Word, Grammarly",
-  tags: ["文案", "营销", "写作"],
-  likes: 22,
-  comments: 4,
-  description: "为新产品发布撰写的宣传文案..."
-}
+    id: 6,
+    title: "年终汇报PPT模板",
+    category: "ppt",  // PPT设计分类
+    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop",
+    size: "1920x1080px",
+    format: "PPTX",
+    date: "2025.11",
+    time: "创作周期：1周",
+    tools: "工具：PowerPoint, Keynote",
+    tags: ["PPT", "模板", "商务"],
+    likes: 15,
+    comments: 5,
+    description: "为年终汇报设计的专业PPT模板..."
+  },
+  {
+    id: 7,
+    title: "产品宣传文案",
+    category: "copywriting",  // 文案撰写分类
+    image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&auto=format&fit=crop",
+    size: "A4",
+    format: "DOCX",
+    date: "2025.09",
+    time: "创作周期：3天",
+    tools: "工具：Word, Grammarly",
+    tags: ["文案", "营销", "写作"],
+    likes: 22,
+    comments: 4,
+    description: "为新产品发布撰写的宣传文案..."
+  }
 ];
 
 // 初始化作品展示
