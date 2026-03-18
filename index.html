@@ -20,6 +20,44 @@
   </div>
 </div>
 
+<head>
+  <meta charset="UTF-8">
+  <title>Lesley | Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- 强制修复脚本 -->
+  <script>
+    // 立即隐藏开屏动画
+    window.addEventListener('load', function() {
+      console.log('强制修复：隐藏开屏动画');
+      var splash = document.getElementById('splashScreen');
+      if (splash) {
+        splash.style.display = 'none';
+        splash.style.opacity = '0';
+        splash.style.visibility = 'hidden';
+        splash.style.pointerEvents = 'none';
+        splash.style.zIndex = '-1';
+      }
+      document.body.style.overflow = 'auto';
+      
+      // 确保页面可见
+      document.body.style.opacity = '1';
+      document.body.style.visibility = 'visible';
+    });
+    
+    // 如果页面卡住，5秒后强制恢复
+    setTimeout(function() {
+      console.log('5秒超时保护');
+      var splash = document.getElementById('splashScreen');
+      if (splash) {
+        splash.style.display = 'none';
+      }
+      document.body.style.overflow = 'auto';
+      document.body.style.opacity = '1';
+    }, 5000);
+  </script>
+</head>
+  
 <!-- 鼠标 -->
 <div class="cursor"><div class="cursor-inner"></div></div>
 
