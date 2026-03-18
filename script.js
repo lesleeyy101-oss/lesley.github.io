@@ -779,147 +779,60 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // 初始化作品展示
-  initWorksGallery();
+  // 填充示例数据
+  populateExampleData();
 });
 
-// 作品数据
-const worksData = [
-  {
-    id: 1,
-    title: "响应式企业官网设计",
-    category: "web",  // 网页设计
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&auto=format&fit=crop",
-    size: "1920x1080px",
-    format: "PNG",
-    date: "2025.03",
-    time: "创作周期：2周",
-    tools: "工具：Figma, React, GSAP",
-    tags: ["UI设计", "响应式", "现代风格", "企业官网"],
-    likes: 24,
-    comments: 8,
-    description: "这是一个为科技公司设计的现代化响应式官网..."
-  },
-  {
-    id: 2,
-    title: "移动端电商APP界面",
-    category: "web",  // 网页设计
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop",
-    size: "1080x1920px",
-    format: "JPG",
-    date: "2025.02",
-    time: "创作周期：3周",
-    tools: "工具：Sketch, Swift, Firebase",
-    tags: ["移动端", "电商", "用户体验", "APP设计"],
-    likes: 42,
-    comments: 15,
-    description: "为电商平台设计的移动端APP界面..."
-  },
-  {
-    id: 3,
-    title: "秋天的样子 我画给你看",  // P2作品
-    category: "poster",  // 海报设计
-    image: "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=800&auto=format&fit=crop",
-    size: "2480x3508px",
-    format: "JPG",
-    date: "2025.10",
-    time: "创作周期：1周",
-    tools: "工具：Procreate, Photoshop",
-    tags: ["插画", "秋季", "海报", "艺术"],
-    likes: 36,
-    comments: 12,
-    description: "一幅描绘秋季氛围的创意插画海报..."
-  },
-  {
-    id: 4,
-    title: "SMART CHASSIS 智能底盘",  // P3作品
-    category: "poster",  // 海报设计
-    image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&auto=format&fit=crop",
-    size: "2480x3508px",
-    format: "AI",
-    date: "2025.12",
-    time: "创作周期：2周",
-    tools: "工具：Illustrator, After Effects",
-    tags: ["科技", "汽车", "信息图", "海报"],
-    likes: 28,
-    comments: 7,
-    description: "为汽车智能底盘技术设计的宣传海报..."
-  },
-  {
-    id: 5,
-    title: "品牌视觉识别系统",
-    category: "other",  // 其他
-    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop",
-    size: "2480x3508px",
-    format: "AI",
-    date: "2025.01",
-    time: "创作周期：1个月",
-    tools: "工具：Illustrator, Photoshop, InDesign",
-    tags: ["品牌设计", "VI系统", "视觉识别"],
-    likes: 18,
-    comments: 6,
-    description: "完整的品牌视觉识别系统设计..."
-  }
-  // 您可以继续添加更多作品
-];
-
-// 初始化作品展示
-function initWorksGallery() {
-  let currentIndex = 0;
-  let currentFilter = 'all';
-  let filteredWorks = [...worksData];
+// 填充示例数据
+function populateExampleData() {
+  const works = [
+    {
+      id: 1,
+      title: "响应式企业官网设计",
+      image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&auto=format&fit=crop",
+      size: "1920x1080px",
+      format: "PNG",
+      date: "2025.03",
+      time: "创作周期：2周",
+      tools: "工具：Figma, React, GSAP",
+      tags: ["UI设计", "响应式", "现代风格"],
+      likes: 24,
+      comments: 8
+    },
+    {
+      id: 2,
+      title: "移动端电商APP界面",
+      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop",
+      size: "1080x1920px",
+      format: "JPG",
+      date: "2025.02",
+      time: "创作周期：3周",
+      tools: "工具：Sketch, Swift, Firebase",
+      tags: ["移动端", "电商", "用户体验"],
+      likes: 42,
+      comments: 15
+    },
+    {
+      id: 3,
+      title: "品牌视觉识别系统",
+      image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop",
+      size: "2480x3508px",
+      format: "AI",
+      date: "2025.01",
+      time: "创作周期：1个月",
+      tools: "工具：Illustrator, Photoshop, InDesign",
+      tags: ["品牌设计", "VI系统", "视觉识别"],
+      likes: 18,
+      comments: 6
+    }
+  ];
   
-  // 获取DOM元素
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  const prevBtn = document.getElementById('prev-works');
-  const nextBtn = document.getElementById('next-works');
-  const counter = document.getElementById('works-counter');
-  const thumbnails = document.getElementById('thumbnails');
-  const toggleDescBtn = document.getElementById('toggle-desc');
-  const descriptionContent = document.getElementById('description-content');
-  const zoomInBtn = document.getElementById('zoom-in');
-  const zoomOutBtn = document.getElementById('zoom-out');
-  const fullscreenBtn = document.getElementById('fullscreen');
-  const mainImage = document.getElementById('main-image');
-  
-  // 1. 分类筛选功能
-  filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // 移除所有按钮的active类
-      filterButtons.forEach(btn => btn.classList.remove('active'));
-      // 给当前点击的按钮添加active类
-      this.classList.add('active');
-      
-      // 获取筛选条件
-      currentFilter = this.dataset.filter;
-      currentIndex = 0; // 重置为第一个作品
-      
-      // 筛选作品
-      if (currentFilter === 'all') {
-        filteredWorks = [...worksData];
-      } else {
-        filteredWorks = worksData.filter(work => work.category === currentFilter);
-      }
-      
-      // 如果没有作品，显示空状态
-      if (filteredWorks.length === 0) {
-        showEmptyState();
-      } else {
-        // 显示第一个作品
-        showWork(currentIndex);
-        // 更新缩略图
-        updateThumbnails();
-      }
-    });
-  });
-  
-  // 2. 显示作品详情
-  function showWork(index) {
-    if (filteredWorks.length === 0) return;
-    
-    const work = filteredWorks[index];
+  // 显示第一个作品
+  if (works.length > 0) {
+    const work = works[0];
     
     // 更新主图
+    const mainImage = document.getElementById('main-image');
     if (mainImage) mainImage.src = work.image;
     
     // 更新信息
@@ -958,171 +871,8 @@ function initWorksGallery() {
         worksTags.appendChild(tagSpan);
       });
     }
-    
-    // 更新描述
-    if (descriptionContent) {
-      const firstPara = descriptionContent.querySelector('p');
-      if (firstPara) {
-        firstPara.textContent = work.description;
-      } else {
-        descriptionContent.innerHTML = `<p>${work.description}</p>`;
-      }
-    }
-    
-    // 更新计数器
-    if (counter) {
-      counter.textContent = `${index + 1} / ${filteredWorks.length}`;
-    }
-    
-    // 更新导航按钮状态
-    if (prevBtn) {
-      prevBtn.disabled = index === 0;
-      prevBtn.style.opacity = index === 0 ? '0.5' : '1';
-    }
-    
-    if (nextBtn) {
-      nextBtn.disabled = index === filteredWorks.length - 1;
-      nextBtn.style.opacity = index === filteredWorks.length - 1 ? '0.5' : '1';
-    }
   }
-  
-  // 3. 更新缩略图
-  function updateThumbnails() {
-    if (!thumbnails) return;
-    
-    thumbnails.innerHTML = '';
-    
-    filteredWorks.forEach((work, index) => {
-      const thumbnail = document.createElement('div');
-      thumbnail.className = 'thumbnail';
-      if (index === currentIndex) {
-        thumbnail.classList.add('active');
-      }
-      
-      thumbnail.innerHTML = `<img src="${work.image}" alt="${work.title}">`;
-      
-      thumbnail.addEventListener('click', () => {
-        currentIndex = index;
-        showWork(currentIndex);
-        updateThumbnails();
-      });
-      
-      thumbnails.appendChild(thumbnail);
-    });
-  }
-  
-  // 4. 显示空状态
-  function showEmptyState() {
-    if (mainImage) mainImage.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iI2Y1ZjVmNSIvPjx0ZXh0IHg9IjQwMCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNjY2MiPuaCqOe7hOS7tuS4jeWtmOWcqC4uLjwvdGV4dD48L3N2Zz4=';
-    
-    const worksTitle = document.getElementById('works-title');
-    if (worksTitle) worksTitle.textContent = '暂无作品';
-    
-    if (counter) counter.textContent = '0 / 0';
-    
-    if (worksTags) worksTags.innerHTML = '';
-    
-    if (descriptionContent) {
-      descriptionContent.innerHTML = '<p>当前分类下暂无作品，敬请期待！</p>';
-    }
-    
-    if (thumbnails) thumbnails.innerHTML = '';
-  }
-  
-  // 5. 上一页/下一页功能
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        showWork(currentIndex);
-        updateThumbnails();
-      }
-    });
-  }
-  
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      if (currentIndex < filteredWorks.length - 1) {
-        currentIndex++;
-        showWork(currentIndex);
-        updateThumbnails();
-      }
-    });
-  }
-  
-  // 6. 展开/收起描述
-  if (toggleDescBtn && descriptionContent) {
-    toggleDescBtn.addEventListener('click', function() {
-      const isExpanded = descriptionContent.classList.contains('expanded');
-      
-      if (isExpanded) {
-        descriptionContent.classList.remove('expanded');
-        this.textContent = '展开详情 ↓';
-      } else {
-        descriptionContent.classList.add('expanded');
-        this.textContent = '收起详情 ↑';
-      }
-    });
-  }
-  
-  // 7. 图片缩放功能
-  if (zoomInBtn && mainImage) {
-    zoomInBtn.addEventListener('click', function() {
-      let currentScale = parseFloat(mainImage.style.transform.replace('scale(', '').replace(')', '')) || 1;
-      mainImage.style.transform = `scale(${currentScale + 0.2})`;
-    });
-  }
-  
-  if (zoomOutBtn && mainImage) {
-    zoomOutBtn.addEventListener('click', function() {
-      let currentScale = parseFloat(mainImage.style.transform.replace('scale(', '').replace(')', '')) || 1;
-      if (currentScale > 0.5) {
-        mainImage.style.transform = `scale(${currentScale - 0.2})`;
-      }
-    });
-  }
-  
-  if (fullscreenBtn && mainImage) {
-    fullscreenBtn.addEventListener('click', function() {
-      if (mainImage.requestFullscreen) {
-        mainImage.requestFullscreen();
-      } else if (mainImage.webkitRequestFullscreen) {
-        mainImage.webkitRequestFullscreen();
-      } else if (mainImage.mozRequestFullScreen) {
-        mainImage.mozRequestFullScreen();
-      } else if (mainImage.msRequestFullscreen) {
-        mainImage.msRequestFullscreen();
-      }
-    });
-  }
-  
-  // 8. 键盘导航
-  document.addEventListener('keydown', function(e) {
-    if (!worksModal.classList.contains('show')) return;
-    
-    if (e.key === 'ArrowLeft') {
-      // 上一页
-      if (currentIndex > 0) {
-        currentIndex--;
-        showWork(currentIndex);
-        updateThumbnails();
-      }
-    } else if (e.key === 'ArrowRight') {
-      // 下一页
-      if (currentIndex < filteredWorks.length - 1) {
-        currentIndex++;
-        showWork(currentIndex);
-        updateThumbnails();
-      }
-    } else if (e.key === 'Escape') {
-      // 退出全屏
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
-    }
-  });
-
-  // 2603190139更新作品展示板块
+}
 
 // 平滑跳过功能
 function skipSplash() {
