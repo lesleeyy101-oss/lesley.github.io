@@ -1,3 +1,76 @@
+// 立即创建缺失的元素，防止错误
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('开始修复页面...');
+  
+  // 1. 创建缺失的互动元素
+  createMissingElements();
+  
+  // 2. 立即显示页面
+  document.body.style.opacity = '1';
+  document.body.style.visibility = 'visible';
+  
+  // 3. 立即跳过开屏动画
+  setTimeout(function() {
+    const splash = document.getElementById('splashScreen');
+    if (splash) {
+      splash.style.opacity = '0';
+      splash.style.pointerEvents = 'none';
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 800);
+    }
+  }, 100);
+});
+
+// 创建缺失的元素
+function createMissingElements() {
+  const worksInfo = document.querySelector('.works-info');
+  if (worksInfo) {
+    // 添加互动区域
+    const interactionHTML = `
+      <!-- 互动区域 -->
+      <div class="works-interaction">
+        <div class="interaction-buttons">
+          <button class="interaction-btn like-btn">
+            <span class="btn-icon">❤️</span>
+            <span class="btn-text">点赞</span>
+            <span class="count" id="like-count">0</span>
+          </button>
+          <button class="interaction-btn comment-btn">
+            <span class="btn-icon">💬</span>
+            <span class="btn-text">评论</span>
+            <span class="count" id="comment-count">0</span>
+          </button>
+        </div>
+        
+        <!-- 评论预览 -->
+        <div class="comments-preview">
+          <div class="comments-header">
+            <h5>最新评论</h5>
+            <button class="view-all-comments">查看全部</button>
+          </div>
+          <div class="comments-list" id="comments-list">
+            <!-- 评论会通过JS动态生成 -->
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // 插入到作品详情后面
+    const worksDetails = document.querySelector('.works-details');
+    if (worksDetails) {
+      const existingInteraction = worksDetails.querySelector('.works-interaction');
+      if (!existingInteraction) {
+        const description = worksDetails.querySelector('.works-description');
+        if (description) {
+          description.insertAdjacentHTML('afterend', interactionHTML);
+        }
+      }
+    }
+  }
+}
+
+
 // 修复自定义鼠标功能
 function initSimpleCursor() {
   const cursor = document.querySelector('.cursor');
