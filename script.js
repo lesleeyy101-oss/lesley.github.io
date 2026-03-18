@@ -859,9 +859,8 @@ const worksData = [
     likes: 18,
     comments: 6,
     description: "完整的品牌视觉识别系统设计..."
-  }
-  // 在worksData数组中添加PPT设计和文案撰写作品
-{
+  },
+  {
   id: 6,
   title: "年终汇报PPT模板",
   category: "ppt",  // PPT设计分类
