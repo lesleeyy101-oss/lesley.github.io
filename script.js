@@ -244,37 +244,91 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }, 1000);
   
-  // 开屏动画
-  const splashScreen = document.getElementById('splashScreen');
+  // 开屏动画功能 - 简化版
+function skipSplash() {
+  console.log('跳过开屏动画');
+  const splash = document.getElementById('splashScreen');
+  if (!splash) {
+    console.warn('找不到开屏动画元素');
+    return;
+  }
   
-  if (splashScreen) {
-    console.log('开屏动画初始化');
+  // 直接隐藏，不添加过渡效果
+  splash.style.display = 'none';
+  splash.style.opacity = '0';
+  splash.style.pointerEvents = 'none';
+  
+  // 确保页面可交互
+  document.body.style.overflow = 'auto';
+  document.body.style.pointerEvents = 'auto';
+}
+
+// 页面加载完成后
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM加载完成');
+  
+  // 检查开屏动画
+  const splash = document.getElementById('splashScreen');
+  if (splash) {
+    console.log('开屏动画已找到');
     
-    // 确保开屏动画可见
-    splashScreen.style.display = 'flex';
-    splashScreen.style.opacity = '1';
-    splashScreen.style.pointerEvents = 'auto';
-    splashScreen.style.zIndex = '9999';
+    // 强制设置样式
+    splash.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #FDE8D3 0%, #F2E4D9 100%);
+      opacity: 1;
+      pointer-events: auto;
+    `;
     
-    // 5秒后自动隐藏
-    setTimeout(() => {
-      if (splashScreen.style.display === 'flex') {
-        skipSplash();
-      }
-    }, 5000);
+    // 5秒后自动跳过
+    setTimeout(skipSplash, 5000);
     
-    // 点击屏幕任意位置跳过
-    splashScreen.addEventListener('click', skipSplash);
+    // 点击跳过
+    splash.addEventListener('click', function(e) {
+      console.log('点击跳过');
+      e.stopPropagation();
+      skipSplash();
+    });
     
     // 键盘任意键跳过
     document.addEventListener('keydown', function(e) {
-      if (splashScreen.style.display === 'flex') {
+      console.log('按键:', e.key);
+      if (splash.style.display !== 'none') {
         skipSplash();
       }
     });
+  } else {
+    console.warn('未找到开屏动画元素');
   }
 });
 
+// 页面完全加载后
+window.addEventListener('load', function() {
+  console.log('页面完全加载');
+  
+  // 确保页面可见
+  document.body.style.opacity = '1';
+  document.body.style.visibility = 'visible';
+  
+  // 最后检查开屏动画
+  setTimeout(function() {
+    const splash = document.getElementById('splashScreen');
+    if (splash && splash.style.display !== 'none') {
+      console.log('强制隐藏开屏动画');
+      splash.style.display = 'none';
+    }
+  }, 6000); // 最多等6秒
+});
+  
 // 作品展示模块功能
 function initWorksGallery() {
   console.log('初始化作品展示...');
