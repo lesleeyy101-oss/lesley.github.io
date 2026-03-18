@@ -7,57 +7,44 @@
 </head>
 <body>
 
+<!-- 紧急CSS修复 -->
+  <style>
+    /* 强制开屏动画显示 */
+    #splashScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #FDE8D3 0%, #F2E4D9 100%);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+    
+    /* 确保页面内容能显示 */
+    body {
+      opacity: 1;
+      visibility: visible;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+
 <!-- 开屏动画 -->
-<div class="splash-screen" id="splashScreen" onclick="skipSplash()">
+<div class="splash-screen" id="splashScreen">
   <div class="splash-content">
     <h1 class="splash-title">Lesley's Channel</h1>
     <p class="splash-subtitle">Welcome to my creative space</p>
-    
-    <!-- 流动线条 -->
     <div class="nordic-flow"></div>
-    
-    
   </div>
 </div>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Lesley | Portfolio</title>
-  <link rel="stylesheet" href="style.css">
-  
-  <!-- 强制修复脚本 -->
-  <script>
-    // 立即隐藏开屏动画
-    window.addEventListener('load', function() {
-      console.log('强制修复：隐藏开屏动画');
-      var splash = document.getElementById('splashScreen');
-      if (splash) {
-        splash.style.display = 'none';
-        splash.style.opacity = '0';
-        splash.style.visibility = 'hidden';
-        splash.style.pointerEvents = 'none';
-        splash.style.zIndex = '-1';
-      }
-      document.body.style.overflow = 'auto';
-      
-      // 确保页面可见
-      document.body.style.opacity = '1';
-      document.body.style.visibility = 'visible';
-    });
-    
-    // 如果页面卡住，5秒后强制恢复
-    setTimeout(function() {
-      console.log('5秒超时保护');
-      var splash = document.getElementById('splashScreen');
-      if (splash) {
-        splash.style.display = 'none';
-      }
-      document.body.style.overflow = 'auto';
-      document.body.style.opacity = '1';
-    }, 5000);
-  </script>
-</head>
-  
 <!-- 鼠标 -->
 <div class="cursor"><div class="cursor-inner"></div></div>
 
