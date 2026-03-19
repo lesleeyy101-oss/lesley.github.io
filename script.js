@@ -770,8 +770,8 @@ const worksData = [
     },
     {
         id: 4,
-        title: "SMART CHASSIS 智能底盘海报",
-        description: "汽车智能底盘技术宣传海报，现代简约风格，突出科技感和未来感。",
+        title: "海报设计及配色素材库",
+        description: "为科技公司设计宣传海报，现代简约风格，突出科技感和未来感。",
         image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         tags: ["海报设计", "科技", "汽车"],
         category: "poster",
