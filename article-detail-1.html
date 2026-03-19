@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公众号推文速览 | 昂创科技融资</title>
+    <style>
+        /* 页面基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px 20px;
+            background: linear-gradient(135deg, #4A90E2, #FF6B9D);
+            color: white;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        /* 文章内容样式保持不变 */
+        .article-title { font-size: 1.8rem; margin-bottom: 15px; font-weight: 600; }
+        .article-subtitle { font-size: 1.2rem; margin-bottom: 20px; color: rgba(255, 255, 255, 0.9); }
+        .article-meta { display: flex; justify-content: center; gap: 20px; color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; }
+        .article-content { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-bottom: 40px; }
+        .article-hero-image { width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 30px; }
+        .article-section { margin-bottom: 30px; }
+        .article-section h2 { color: #4A90E2; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+        .article-section p { margin-bottom: 15px; color: #444; }
+        .highlight-box { background: #f8f9ff; border-left: 4px solid #4A90E2; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 25px 0; }
+        .stat-item { background: #f0f7ff; padding: 15px; border-radius: 10px; text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 600; color: #4A90E2; margin-bottom: 5px; }
+        .stat-label { color: #666; font-size: 0.9rem; }
+        .contact-info { background: linear-gradient(135deg, #4A90E2, #FF6B9D); color: white; padding: 30px; border-radius: 15px; margin-top: 40px; }
+        .contact-info h3 { margin-bottom: 20px; text-align: center; }
+        .contact-details { display: flex; flex-direction: column; gap: 15px; }
+        .contact-item { display: flex; align-items: center; gap: 10px; }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .article-content { padding: 25px; }
+            .article-title { font-size: 1.5rem; }
+            .header { padding: 30px 15px 15px; }
+            .close-btn { top: 10px; right: 10px; width: 36px; height: 36px; font-size: 20px; }
+        }
+        
+        /* ===== 原始鼠标样式 ===== */
+        .cursor {
+            width: 24px;
+            height: 36px;
+            background: linear-gradient(145deg, #f7f3ef, #e4dcd3);
+            border-radius: 14px 14px 18px 18px;
+            position: fixed;
+            pointer-events: none;
+            transform: translate(-50%, -50%) rotate(5deg);
+            box-shadow:
+                inset -2px -4px 6px rgba(0,0,0,0.1),
+                inset 2px 2px 4px rgba(255,255,255,0.8),
+                0 6px 14px rgba(0,0,0,0.25);
+            transition: transform 0.08s cubic-bezier(0.2, 0.8, 0.2, 1);
+            z-index: 9999;
+        }
+
+        /* ===== 左右键分割线 ===== */
+        .cursor::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            width: 1px;
+            height: 10px;
+            background: rgba(0,0,0,0.15);
+            transform: translateX(-50%);
+        }
+
+        /* ===== 滚轮 ===== */
+        .cursor::after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: 3px;
+            height: 6px;
+            border-radius: 2px;
+            background: #64748B; /* var(--text-medium) 的近似值 */
+            transform: translateX(-50%);
+            opacity: 0.8;
+        }
+
+        /* ===== hover 放大一点 ===== */
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(1.15) rotate(3deg);
+        }
+
+        /* ===== 点击压扁（真实感） ===== */
+        .cursor.click {
+            transform: translate(-50%, -50%) scale(0.9, 0.8) rotate(0deg);
+        }
+    </style>
+</head>
+<body>
+    <!-- 原始鼠标 -->
+    <div class="cursor"></div>
+    
+    <div class="container">
+        <header class="header">
+            <button class="close-btn" id="closeButton" onclick="history.back()">×</button>
+            <a href="javascript:history.back()" class="back-btn">← 返回公众号推文列表</a>
+            <h1 class="article-title">昂创科技完成Pre-A轮数千万元融资，长兴基地量产在即</h1>
+            <div class="article-subtitle">融资+量产双轮驱动，昂创科技以全主动液压悬架技术，赋能新能源汽车底盘升级</div>
+            <div class="article-meta">
+                <span>发布日期：2025-06-15</span>
+                <span>浏览量：204</span>
+                <span>作者：Lesley</span>
+            </div>
+        </header>
+        
+       <main class="article-content">
+            <!-- 文章主图 -->
+            <img src="images/unnamed.jpg" 
+                 alt="昂创科技智能工厂" 
+                 class="article-hero-image"
+                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555212697-194d092e3b8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'; this.alt='昂创科技智能工厂（备用图片）'">
+            
+            <section class="article-section">
+                <h2>开篇：资本与产业的双重认可</h2>
+                <p>近日，昂创科技（苏州）有限公司（以下简称"昂创科技"）宣布完成数千万元Pre-A轮融资。本轮融资由涌铧投资、聚卓资本、中科物联联合投资，资金将主要用于长兴产业基地的建设与量产、新一代全主动液压悬架技术的持续研发以及客户工程团队的扩充。</p>
+                <p>这是昂创科技继2024年获得艾新博盛投资、石雀投资首轮融资后的又一次资本加持，标志着公司从技术验证阶段正式迈入产业化快车道。</p>
+            </section>
+            
+            <section class="article-section">
+                <h2>📍 长兴基地：10万套年产能，打造车规级智能化标杆工厂</h2>
+                <p>作为本轮融资的核心投向，昂创科技在浙江长兴签约建设的<strong>智能全主动液压悬架量产工厂</strong>正在加速推进。</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">8000㎡</div>
+                        <div class="stat-label">占地面积</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">10万套</div>
+                        <div class="stat-label">年产能</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">2000㎡</div>
+                        <div class="stat-label">洁净车间</div>
+                    </div>
+                   
+                </div>
+                
+                <div class="highlight-box">
+                    <p>该基地规划年产<strong>10万套全主动液压悬架</strong>。其中，<strong>超2000平方米的洁净车间</strong>配备了空气净化系统和温湿度控制设备，确保车规级产品的生产环境。产线设计为柔性化、智能化，将全面引入MES系统进行全流程监控，搭配自动化仓储中心和智能物流系统，实现从物料分拣到成品出库的精准高效运作。</p>
+                    <p>长兴基地预计于<strong>2026年正式投产</strong>。届时，昂创科技将形成"苏州研发+长兴量产"的双引擎布局，为合作伙伴提供更稳定、更可靠的供应链保障。</p>
+                </div>
+            </section>
+            
+            <section class="article-section">
+                <h2>🔧 核心技术：全主动液压悬架，定义底盘智能新高度</h2>
+                <p>昂创科技专注于新能源汽车底盘电控系统，以中央集成域控制器、模块化伺服电机驱动控制单元和机电一体化油阀控制集成模块的软硬件设计为核心基础，围绕新能源汽车底盘运动与能量融合控制算法，打造更安全、更舒适、更节能的模块化底盘电控产品。</p>
+                
+                <div class="highlight-box">
+                    <h3>白泽悬架系统系列技术指标：</h3>
+                    <p><strong>白泽悬架-MAX版</strong>：自研单向泵+电磁阀换向技术，四轮独立控制，可实现<strong>6倍刚度、5ms极速调节、300mm/s极速托举车身</strong>，毫秒级响应适应复杂路况。</p>
+                    <p><strong>白泽悬架-LITE版</strong>：结构更紧凑，匹配麦弗逊悬架，以更优成本推动主动悬架技术下探普及。</p>
+                </div>
+                
+                <p>公司核心团队成员均拥有<strong>超15年</strong>汽车行业经验，曾任职于<strong>博世、大陆、吉利、蔚来、上汽</strong>等国内外知名企业。目前公司员工超60人，已获<strong>多家头部主机厂定点</strong>，产品覆盖新能源汽车、智能机器人及eVTOL飞行器三大前沿领域。</p>
+            </section>
+            
+            <section class="article-section">
+                <h2>🤝 战略合作+资本背书：多方认可构建产业生态</h2>
+                <p><strong>与同元软控达成战略合作，共建联合研发实验室</strong></p>
+                <p>2026年2月11日，昂创科技与苏州同元软控技术股份有限公司正式达成战略合作，并携手成立联合研发实验室。</p>
+                <p>同元软控是专业从事新一代信息物理系统建模仿真工业软件产品研发的国家高新技术企业，其自主研发的新一代科学计算与系统建模仿真平台MWORKS已基本具备美国MATLAB/Simulink软件的替代能力，产品广泛应用于探月工程、载人航天等国家重大工程。</p>
+                
+                <div class="highlight-box">
+                    <p><strong>此次合作将实现双向赋能：</strong></p>
+                    <p>昂创科技对极致驾乘体验的追求与复杂工况的深刻理解，将转化为系统仿真工具的前沿需求；</p>
+                    <p>同元软控成熟的建模方法与平台能力，为昂创科技研发注入体系化、模型化的系统工程思维，重塑从概念设计到验证优化的全流程。</p>
+                    <p><strong>联合实验室明确了清晰的发展路径：</strong>短期聚焦关键技术攻关与工具链闭环验证，中期探索"<strong>模型即产品</strong>"的数字交付新模式，长期则致力于构建开放协同的产业创新生态。</p>
+                </div>
+                
+                <h3>投资方：涌铧将导入产业资源，助力打造"隐形冠军"</h3>
+                <p>投资方涌铧投资表示："昂创科技团队兼具技术深度与产业化视野，其全主动液压悬架方案在能效、响应速度和可靠性上均有突破。长兴基地的量产布局将帮助公司快速抢占市场，我们看好其成为国产全主动悬架的'隐形冠军'。"涌铧投资将积极导入产业资源，助力昂创科技加速乘用车主机厂、eVTOL及机器人客户的项目落地与海外认证。</p>
+            </section>
+            
+            <section class="article-section">
+                <h2>📈 对供应商与客户的承诺：产能保障 + 技术共研 + 长期共赢</h2>
+                <p>随着长兴基地的投产，昂创科技将为上下游伙伴带来切实价值：</p>
+                <p><strong>为供应商伙伴</strong>带来稳定的订单需求、透明的产能规划、协同的技术升级机会。</p>
+                <p><strong>为客户伙伴</strong>带来更短的交货周期、更可靠的产品质量、定制化的底盘系统解决方案。</p>
+                
+                <div class="highlight-box">
+                    <p>"我们始终相信，产业链的共赢才是真正的成功。"创始人夏佳佳表示，"昂创科技将以长兴基地为支点，持续开放合作，与供应商、客户共同推动新能源汽车底盘技术的革新。"</p>
+                </div>
+            </section>
+            
+            <section class="article-section">
+                <h2>🌟 关于昂创科技</h2>
+                <p>昂创科技成立于2020年，总部位于苏州工业园区，是一家以新能源汽车全主动液压悬架产品为核心业务，以液压泵阀控制模块HPU以及模块化伺服电机驱动控制器PPK为核心软硬件技术基础的科技企业。公司致力于通过底盘运动与能量融合控制算法提升车辆的操控性、舒适性和能效，为新能源汽车和智能驾驶领域提供关键零部件解决方案。</p>
+            </section>
+            
+            <div class="contact-info">
+                <h3>📧 商务合作咨询</h3>
+                <div class="contact-details">
+                    <div class="contact-item">📧 业务合作邮箱：business@onchuang-tech.com</div>
+                    <div class="contact-item">📞 联系电话：13205177318</div>
+                    <div class="contact-item">📍 苏州工业园区港浪路1号C栋 | 浙江湖州长兴产业基地（筹建中）</div>
+                </div>
+                <p style="margin-top: 20px; text-align: center; font-style: italic;">
+                    长兴产业基地预计2026年正式投产，欢迎合作伙伴莅临考察！
+                </p>
+            </div>
+            
+            <div class="article-footer">
+                <p style="text-align: center; color: #666; font-style: italic;">
+                    > 关注昂创科技公众号，获取最新产品动态与合作资讯
+                </p>
+            </div>
+        </main>
+        
+        <footer style="text-align: center; color: #666; padding: 20px; font-size: 0.9rem;">
+            <p>© 2025 公众号推文速览 | 转载请注明出处</p>
+        </footer>
+    </div>
+
+
+    <script>
+        // ============================================
+        // 页面控制功能
+        // ============================================
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 确保系统鼠标被隐藏
+            document.body.style.cursor = 'none';
+            
+            // 确保鼠标元素可见
+            const cursor = document.querySelector('.cursor');
+            if (cursor) {
+                cursor.style.display = 'block';
+                cursor.style.opacity = '1';
+                cursor.style.visibility = 'visible';
+            }
+        });
+
+        // ============================================
+        // 原始鼠标功能
+        // ============================================
+
+        const cursor = document.querySelector(".cursor");
+
+        let mx = 0, my = 0;
+        let x = 0, y = 0;
+
+        /* ===== 鼠标跟随（丝滑） ===== */
+        document.addEventListener("mousemove", e => {
+            mx = e.clientX;
+            my = e.clientY;
+        });
+
+        function loop() {
+            x += (mx - x) * 0.18;
+            y += (my - y) * 0.18;
+
+            cursor.style.left = x + "px";
+            cursor.style.top = y + "px";
+
+            requestAnimationFrame(loop);
+        }
+        loop();
+
+        /* ===== 点击压感 ===== */
+        document.addEventListener("mousedown", () => {
+            cursor.classList.add("click");
+        });
+
+        document.addEventListener("mouseup", () => {
+            cursor.classList.remove("click");
+        });
+
+        /* ===== hover 放大（关键） ===== */
+        document.querySelectorAll("a, button, .back-btn, .close-btn, .article-hero-image").forEach(el => {
+            el.addEventListener("mouseenter", () => {
+                cursor.classList.add("hover");
+            });
+            el.addEventListener("mouseleave", () => {
+                cursor.classList.remove("hover");
+            });
+        });
+    </script>
+</body>
+</html>
